@@ -2,6 +2,7 @@ import Loader from "@/components/loader";
 import { supabase } from "@/utils/supabaseClient";
 import { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const EscortDuty: NextPage = () => {
@@ -30,6 +31,27 @@ const EscortDuty: NextPage = () => {
         <title>Escort Duty</title>
       </Head>
       <div className="text-2xl text-center capitalize">escort duty</div>
+      <div className="bg-sky-600 hover:bg-sky-500 hover:shadow-md inline-block p-2 ml-3 text-white rounded-md">
+        <Link href="/escort_duty/new">
+          <a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6 inline mr-1"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span className="pt-2">Add New</span>
+          </a>
+        </Link>
+      </div>
       {escort == undefined ? (
         <div>
           <Loader type="cubes" color="black" />
