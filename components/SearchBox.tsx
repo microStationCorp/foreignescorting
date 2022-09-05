@@ -1,11 +1,8 @@
 /* This example requires Tailwind CSS v2.0+ */
 import { Dispatch, Fragment, SetStateAction } from "react";
 import { Menu, Transition } from "@headlessui/react";
+import { IStaff } from "pages/escort_duty/new";
 
-interface IStaff {
-  id: string;
-  name: string;
-}
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -70,14 +67,14 @@ export default function Example({
                 {({ active }) => (
                   <a
                     onClick={() =>
-                      onSelectHandler({ id: item.id, name: item.name })
+                      onSelectHandler({ id: item.id, name: item.name,designation:item.designation })
                     }
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                       "block px-4 py-2 text-sm"
                     )}
                   >
-                    {item.name}
+                    {item.name} ({item.designation})
                   </a>
                 )}
               </Menu.Item>

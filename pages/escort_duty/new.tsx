@@ -4,9 +4,10 @@ import { supabase } from "@/utils/supabaseClient";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-interface IStaff {
+export interface IStaff {
   id: string;
   name: string;
+  designation: string;
 }
 
 export default function NewEscortDuty() {
@@ -16,14 +17,13 @@ export default function NewEscortDuty() {
   useEffect(() => {
     fetchStaffs();
 
-    return ()=> setSelectedstaff(undefined);
-
+    return () => setSelectedstaff(undefined);
   }, []);
 
   const fetchStaffs = async () => {
     const { data: staff, error } = await supabase
       .from("staff")
-      .select(`id, name`);
+      .select(`id, name, designation`);
 
     if (error) {
       console.log(error);
@@ -49,13 +49,23 @@ export default function NewEscortDuty() {
             </div>
             {staffs !== undefined ? (
               <div>
-                <SearchBox items={staffs} setSelectedhandler={setSelectedstaff} setStaffHandler={setStaffs} />
+                <SearchBox
+                  items={staffs}
+                  setSelectedhandler={setSelectedstaff}
+                  setStaffHandler={setStaffs}
+                />
               </div>
             ) : null}
             {selectedStaff !== undefined ? (
               <>
-              <span className="text-stone-600 opacity-75 text-xs font-medium">~ {selectedStaff.length} staff selected ~</span>
-              <SelectedEscort selected={selectedStaff} />
+                <span className="text-stone-600 opacity-75 text-xs font-medium">
+                  ~ {selectedStaff.length} staff selected ~
+                </span>
+                <SelectedEscort
+                  selected={selectedStaff}
+                  setStaffHandler={setStaffs}
+                  setSelectedhandler={setSelectedstaff}
+                />
               </>
             ) : null}
             <div>
