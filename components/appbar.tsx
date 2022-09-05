@@ -12,6 +12,10 @@ const links: { name: string; url: string }[] = [
     name: "staffs",
     url: "/staffs",
   },
+  {
+    name: "escort duty",
+    url: "/escort_duty",
+  },
 ];
 
 const AppBar = () => {
@@ -97,22 +101,17 @@ const AppBar = () => {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
         >
-          
-            <div className="md:hidden" id="mobile-menu-container">
-              <div
-                
-                className="bg-white px-2 pt-2 pb-3 space-y-1 sm:px-3"
-              >
-                {links.map((link) => (
-                  <Link key={link.url} href={link.url} passHref>
-                    <a className="capitalize px-3 py-2 hover:bg-blue-500 text-black hover:text-white block rounded-md text-base font-medium">
-                      {link.name}
-                    </a>
-                  </Link>
-                ))}
-              </div>
+          <div className="md:hidden" id="mobile-menu-container">
+            <div className="bg-white px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              {links.map((link) => (
+                <Link key={link.url} href={link.url} passHref>
+                  <a className="capitalize px-3 py-2 hover:bg-blue-500 text-black hover:text-white block rounded-md text-base font-medium">
+                    {link.name}
+                  </a>
+                </Link>
+              ))}
             </div>
-          
+          </div>
         </Transition>
       </nav>
     </>

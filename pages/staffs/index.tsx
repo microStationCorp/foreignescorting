@@ -3,6 +3,7 @@ import { StaffI } from "@/utils/interfaces";
 import { supabase } from "@/utils/supabaseClient";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const Staffs: NextPage = () => {
@@ -42,6 +43,13 @@ const Staffs: NextPage = () => {
                   {st.ticket !== null ? (
                     <div>ticket number:{st.ticket}</div>
                   ) : null}
+                  <div>
+                    <Link href={`/staffs/${st.id}`} passHref>
+                      <a className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
+                        go to
+                      </a>
+                    </Link>
+                  </div>
                 </li>
                 <hr />
               </div>
