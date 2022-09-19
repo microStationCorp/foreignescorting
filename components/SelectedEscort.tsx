@@ -1,7 +1,7 @@
 import { IStaff } from "pages/escort_duty/new";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 
-export default function SelectedEscort({
+ function SelectedEscort({
   selected,
   setSelectedhandler,
   setStaffHandler,
@@ -21,6 +21,8 @@ export default function SelectedEscort({
       }
     });
   };
+
+
   return (
     <div className="mx-4 my-2">
       {selected?.map((s) => (
@@ -48,3 +50,5 @@ export default function SelectedEscort({
     </div>
   );
 }
+
+export default React.memo(SelectedEscort)

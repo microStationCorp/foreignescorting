@@ -1,3 +1,4 @@
+import AccordionComp from "@/components/AccordionCopm";
 import Loader from "@/components/loader";
 import { supabase } from "@/utils/supabaseClient";
 import { NextPage } from "next";
@@ -6,23 +7,21 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const EscortDuty: NextPage = () => {
-  const [escort, setEscort] = useState<any[] | undefined>();
+  const [escort_prog, setEscortProg] = useState<any[] | undefined>();
 
   useEffect(() => {
     fetchEscort();
   }, []);
 
   const fetchEscort = async () => {
-    const { data: escort, error } = await supabase
-      .from("escort")
-      .select(
-        `*,staff_1(name,designation),staff_2(name,designation),staff_3(name,designation),staff_4(name,designation)`
-      );
+    const { data: escort_prog, error } = await supabase
+      .from("escort_prog")
+      .select(`*`);
 
     if (error) {
       console.log(error);
     } else {
-      setEscort(escort);
+      setEscortProg(escort_prog);
     }
   };
   return (
@@ -52,40 +51,27 @@ const EscortDuty: NextPage = () => {
           </a>
         </Link>
       </div>
-      {escort == undefined ? (
+
+      {escort_prog == undefined ? (
         <div>
           <Loader type="cubes" color="black" />
         </div>
       ) : (
-        <ol className="flex justify-center">
-          {escort?.map((es) => (
-            <div
-              key={es.id}
-              className="text-center drop-shadow-md bg-orange-300 p-4 mt-2 w-1/2 rounded-md shadow-md"
-            >
-              <li>
-                <div>Escort on : {new Date(es.escort_at).toDateString()}</div>
-                <div className="capitalize">destination : {es.destination}</div>
-                <div>
-                  <div className="text-lg capitalize font-medium">
-                    staff 1 : {es.staff_1.name} ({es.staff_1.designation})
-                  </div>
-                  <div className="text-lg capitalize font-medium">
-                    staff 2 : {es.staff_2.name} ({es.staff_2.designation})
-                  </div>
-                  <div className="text-lg capitalize font-medium">
-                    staff 3 : {es.staff_3.name} ({es.staff_3.designation})
-                  </div>
-                  {es.staff_4 !== null ? (
-                    <div className="text-lg capitalize font-medium">
-                      staff 4 : {es.staff_4.name} ({es.staff_4.designation})
-                    </div>
-                  ) : null}
-                </div>
-              </li>
-            </div>
+        <div className="shadow-md w-full md:w-2/3 mx-auto mt-4">
+          {escort_prog?.map((ep) => (
+            // accordin
+            <AccordionComp
+              key={ep.id}
+              prog_id={ep.id}
+              head={`On ${new Date(ep.escort_at).toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })} to ${ep.destination}`}
+            />
           ))}
-        </ol>
+        </div>
       )}
     </>
   );

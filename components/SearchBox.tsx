@@ -1,14 +1,13 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Dispatch, Fragment, SetStateAction } from "react";
+import React, { Dispatch, Fragment, SetStateAction } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { IStaff } from "pages/escort_duty/new";
-
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example({
+ function SearchBox({
   items,
   setSelectedhandler,
   setStaffHandler,
@@ -17,6 +16,7 @@ export default function Example({
   setSelectedhandler: Dispatch<SetStateAction<IStaff[] | undefined>>;
   setStaffHandler: Dispatch<SetStateAction<IStaff[] | undefined>>;
 }) {
+
   const onSelectHandler = (item: IStaff) => {
     setStaffHandler((prev) => prev?.filter((data) => data.id !== item.id));
 
@@ -67,7 +67,11 @@ export default function Example({
                 {({ active }) => (
                   <a
                     onClick={() =>
-                      onSelectHandler({ id: item.id, name: item.name,designation:item.designation })
+                      onSelectHandler({
+                        id: item.id,
+                        name: item.name,
+                        designation: item.designation,
+                      })
                     }
                     className={classNames(
                       active ? "bg-gray-100 text-gray-900" : "text-gray-700",
@@ -85,3 +89,5 @@ export default function Example({
     </Menu>
   );
 }
+
+export default React.memo(SearchBox)
