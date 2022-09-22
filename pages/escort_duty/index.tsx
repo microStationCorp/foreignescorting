@@ -57,18 +57,19 @@ const EscortDuty: NextPage = () => {
           <Loader type="cubes" color="black" />
         </div>
       ) : (
-        <div className="shadow-md w-full md:w-2/3 mx-auto mt-4">
+        <div className="w-full md:w-2/3 mx-auto mt-4 pb-2 rounded-md shadow-md border-2">
           {escort_prog?.map((ep) => (
             // accordin
             <AccordionComp
               key={ep.id}
               prog_id={ep.id}
-              head={`On ${new Date(ep.escort_at).toLocaleDateString("en-US", {
+              date={new Date(ep.escort_at).toLocaleDateString("en-US", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
                 day: "numeric",
-              })} to ${ep.destination}`}
+              })}
+              destination={ep.destination}
             />
           ))}
         </div>

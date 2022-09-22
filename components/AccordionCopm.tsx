@@ -2,9 +2,19 @@ import { supabase } from "@/utils/supabaseClient";
 import React, { useEffect, useState } from "react";
 import Loader from "./loader";
 
-function AccordionComp({ head, prog_id }: { head: string; prog_id: string }) {
-  console.log("render accordin ~");
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}
 
+function AccordionComp({
+  prog_id,
+  date,
+  destination,
+}: {
+  prog_id: string;
+  date: string;
+  destination: string;
+}) {
   const [isChecked, setChecked] = useState(false);
   const [escort_staff, setEscortStaff] = useState<
     | any
@@ -16,7 +26,6 @@ function AccordionComp({ head, prog_id }: { head: string; prog_id: string }) {
   >();
 
   useEffect(() => {
-    console.log(isChecked, prog_id);
     if (isChecked) {
       fetchEscort();
     }
@@ -32,7 +41,6 @@ function AccordionComp({ head, prog_id }: { head: string; prog_id: string }) {
     if (error) {
       console.log(error);
     } else {
-      console.log(escort_staff);
       setEscortStaff(escort_staff);
     }
   };
@@ -40,20 +48,24 @@ function AccordionComp({ head, prog_id }: { head: string; prog_id: string }) {
   return (
     <>
       <div className="overflow-hidden">
-        <label className=" hover:cursor-pointer">
-          <input
-            type="checkbox"
-            className="absolute opacity-0 peer"
-            onChange={(e) => setChecked(e.target.checked)}
-          />
-          <p className="inline">{head}</p>
+        <div
+          className="hover:cursor-pointer flex justify-between p-2 ml-2"
+          onClick={() => setChecked((prev) => !prev)}
+        >
+          <p className="flex-auto">
+            {" "}
+            <span>{`On`}</span> <span className="italic font-semibold">{date}</span> to{" "}
+            <span className="italic font-semibold">{destination}</span>
+          </p>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-6 h-6 inline-block float-right mr-2 peer-checked:rotate-180"
+            className={`w-6 h-6 mr-2 flex-none ${classNames(
+              isChecked ? "rotate-180" : ""
+            )}`}
           >
             <path
               strokeLinecap="round"
@@ -61,33 +73,36 @@ function AccordionComp({ head, prog_id }: { head: string; prog_id: string }) {
               d="M19.5 8.25l-7.5 7.5-7.5-7.5"
             />
           </svg>
-
-          <div className="bg-gray-500 max-h-0 peer-checked:max-h-max">
-            {escort_staff == undefined ? (
-              <div>
-                <Loader type="cubes" color="black" />
-              </div>
-            ) : (
-              <ul>
-                {escort_staff?.map(
-                  (es: {
-                    id: string;
-                    staff: {
-                      name: string;
-                      designation: string;
-                      ticket: string;
-                    };
-                  }) => (
-                    <li key={es.id}>
-                      {es.staff.name} ({es.staff.designation}
-                      {es.staff.ticket ? `/${es.staff.ticket}` : null})
-                    </li>
-                  )
-                )}
-              </ul>
-            )}
-          </div>
-        </label>
+        </div>
+        <div
+          className={`bg-gray-300 rounded-md ${classNames(
+            isChecked ? "max-h-min p-4 mx-4" : "max-h-0"
+          )}`}
+        >
+          {escort_staff == undefined ? (
+            <div>
+              <Loader type="cubes" color="black" />
+            </div>
+          ) : (
+            <ul>
+              {escort_staff?.map(
+                (es: {
+                  id: string;
+                  staff: {
+                    name: string;
+                    designation: string;
+                    ticket: string;
+                  };
+                }) => (
+                  <li key={es.id}>
+                    {es.staff.name} ({es.staff.designation}
+                    {es.staff.ticket ? `/${es.staff.ticket}` : null})
+                  </li>
+                )
+              )}
+            </ul>
+          )}
+        </div>
       </div>
     </>
   );
