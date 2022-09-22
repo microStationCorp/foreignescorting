@@ -16,7 +16,8 @@ const EscortDuty: NextPage = () => {
   const fetchEscort = async () => {
     const { data: escort_prog, error } = await supabase
       .from("escort_prog")
-      .select(`*`);
+      .select(`*`)
+      .order("escort_at",{ascending:false});
 
     if (error) {
       console.log(error);
