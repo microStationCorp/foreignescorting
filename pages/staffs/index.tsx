@@ -33,7 +33,7 @@ const Staffs: NextPage = () => {
         </main>
       ) : (
         <main className="container mx-auto px-4 md:w-2/3 lg:w-1/2">
-          <div className="text-3xl mt-4 capitalize text-center">
+          <div className="text-3xl my-4 capitalize text-center">
             Total staffs
           </div>
           <div className="rounded-md shadow-md border-2 p-1">
