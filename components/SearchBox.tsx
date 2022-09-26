@@ -7,7 +7,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
- function SearchBox({
+function SearchBox({
   items,
   setSelectedhandler,
   setStaffHandler,
@@ -16,7 +16,6 @@ function classNames(...classes: string[]) {
   setSelectedhandler: Dispatch<SetStateAction<IStaff[] | undefined>>;
   setStaffHandler: Dispatch<SetStateAction<IStaff[] | undefined>>;
 }) {
-
   const onSelectHandler = (item: IStaff) => {
     setStaffHandler((prev) => prev?.filter((data) => data.id !== item.id));
 
@@ -90,4 +89,4 @@ function classNames(...classes: string[]) {
   );
 }
 
-export default React.memo(SearchBox)
+export default React.memo(SearchBox);

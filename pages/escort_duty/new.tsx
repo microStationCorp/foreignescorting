@@ -46,8 +46,6 @@ export default function NewEscortDuty() {
   };
 
   const onSubmitHandler = async (e: any) => {
-    e.preventDefault();
-
     setLoading(true);
 
     if (selectedStaff?.length !== 3 && selectedStaff?.length !== 4) {
@@ -84,11 +82,12 @@ export default function NewEscortDuty() {
           setError(true);
           setAcknowledge("error occurred");
         } else {
-          setAcknowledge("submitted");
+          setStaffs((prev) => prev && [...prev, ...selectedStaff]);
           setSelectedstaff(undefined);
           setStartDate(new Date());
           setDestination("");
           setError(false);
+          setAcknowledge("submitted");
         }
       }
     }

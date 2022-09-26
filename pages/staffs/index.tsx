@@ -17,7 +17,9 @@ const Staffs: NextPage = () => {
   const fetchStaff = async () => {
     let { data: staff, error } = await supabase.from("staff").select("*");
     if (error) console.log(error);
-    else setStaffs(staff);
+    else {
+      setStaffs(staff);
+    }
   };
 
   return (
