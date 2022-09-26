@@ -55,41 +55,32 @@ export default function NewEscortDuty() {
       setError(true);
       setAcknowledge("please select a valid destination");
     } else {
-      // escorting program adding
-      const { data: escort_prog, error } = await supabase
-        .from("escort_prog")
-        .insert([{ escort_at: startDate, destination }])
-        .select()
-        .single();
-
-      if (error) {
-        console.log(error);
-        setAcknowledge("error occurred");
-        setError(true);
-      } else if (escort_prog) {
-        //escort staff adding
-        const { data, error } = await supabase
-          .from("escort_staff")
-          .insert(
-            selectedStaff?.map((ss) => ({
-              escort_program_id: escort_prog.id,
-              staff_id: ss.id,
-            }))
-          )
-          .select();
-        if (error) {
-          console.log(error);
-          setError(true);
-          setAcknowledge("error occurred");
-        } else {
+      fetch("/api/insert_escort_duty", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          escort_at: startDate,
+          destination,
+          selectedStaff,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
           setStaffs((prev) => prev && [...prev, ...selectedStaff]);
           setSelectedstaff(undefined);
           setStartDate(new Date());
           setDestination("");
           setError(false);
           setAcknowledge("submitted");
-        }
-      }
+        })
+        .catch((err) => {
+          console.log(err);
+          setError(true);
+          setAcknowledge("error");
+        });
     }
 
     setLoading(false);
