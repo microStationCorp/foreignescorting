@@ -8,3 +8,7 @@ export const detailedDate = (date: string) =>
     month: "long",
     day: "numeric",
   });
+
+export function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ");
+}

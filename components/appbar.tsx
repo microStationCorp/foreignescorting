@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Transition } from "@headlessui/react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const links: { name: string; url: string }[] = [
   {
@@ -121,4 +121,4 @@ const AppBar = () => {
   );
 };
 
-export default AppBar;
+export default React.memo(AppBar);

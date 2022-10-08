@@ -1,6 +1,7 @@
 import DatePickerComponent from "@/components/DatePickerComp";
 import SearchBox from "@/components/SearchBox";
 import SelectedEscort from "@/components/SelectedEscort";
+import { classNames } from "@/utils/functions";
 import { supabase } from "@/utils/supabaseClient";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -11,9 +12,6 @@ export interface IStaff {
   designation: string;
 }
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 export default function NewEscortDuty() {
   const [staffs, setStaffs] = useState<IStaff[] | undefined>();

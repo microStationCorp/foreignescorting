@@ -1,3 +1,4 @@
+import React from "react";
 import ReactLoading, { LoadingType } from "react-loading";
 
 function Loader({ type, color }: { type: LoadingType; color: string }) {
@@ -10,4 +11,4 @@ function Loader({ type, color }: { type: LoadingType; color: string }) {
   );
 }
 
-export default Loader;
+export default React.memo(Loader);

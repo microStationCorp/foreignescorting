@@ -1,12 +1,10 @@
 import Loader from "@/components/loader";
+import { classNames } from "@/utils/functions";
 import { StaffI } from "@/utils/interfaces";
 import { supabase } from "@/utils/supabaseClient";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 function Staff({ staff }: { staff: StaffI }) {
   const [staffDetail, setStaffdetail] = useState<any[] | undefined>();

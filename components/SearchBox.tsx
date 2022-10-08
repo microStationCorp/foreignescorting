@@ -2,10 +2,8 @@
 import React, { Dispatch, Fragment, SetStateAction } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { IStaff } from "pages/escort_duty/new";
+import { classNames } from "@/utils/functions";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 function SearchBox({
   items,

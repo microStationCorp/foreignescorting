@@ -1,9 +1,7 @@
+import { classNames } from "@/utils/functions";
 import React, { useEffect, useState } from "react";
 import Loader from "./loader";
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
 
 function AccordionComp({
   prog_id,
