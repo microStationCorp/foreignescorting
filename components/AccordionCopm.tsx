@@ -1,4 +1,3 @@
-import { supabase } from "@/utils/supabaseClient";
 import React, { useEffect, useState } from "react";
 import Loader from "./loader";
 
@@ -22,6 +21,7 @@ function AccordionComp({
     | {
         id: string;
         staff: { name: string; designation: string; ticket: string };
+        dollar_rate?: string;
       }[]
   >();
 
@@ -33,16 +33,19 @@ function AccordionComp({
   }, [isChecked]);
 
   const fetchEscort = async () => {
-    const { data: escort_staff, error } = await supabase
-      .from("escort_staff")
-      .select(`id,staff(name,designation,ticket)`)
-      .eq("escort_program_id", prog_id);
-
-    if (error) {
-      console.log(error);
-    } else {
-      setEscortStaff(escort_staff);
-    }
+    fetch("/api/get_program_details", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prog_id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setEscortStaff(data);
+      });
   };
 
   return (
@@ -54,7 +57,8 @@ function AccordionComp({
         >
           <p className="flex-auto">
             {" "}
-            <span>{`On`}</span> <span className="italic font-semibold">{date}</span> to{" "}
+            <span>{`On`}</span>{" "}
+            <span className="italic font-semibold">{date}</span> to{" "}
             <span className="italic font-semibold">{destination}</span>
           </p>
           <svg
@@ -84,23 +88,28 @@ function AccordionComp({
               <Loader type="cubes" color="black" />
             </div>
           ) : (
-            <ul>
-              {escort_staff?.map(
-                (es: {
-                  id: string;
-                  staff: {
-                    name: string;
-                    designation: string;
-                    ticket: string;
-                  };
-                }) => (
-                  <li key={es.id}>
-                    {es.staff.name} ({es.staff.designation}
-                    {es.staff.ticket ? `/${es.staff.ticket}` : null})
-                  </li>
-                )
+            <div>
+              <ul>
+                {escort_staff.staffs?.map(
+                  (es: {
+                    id: string;
+                    staff: {
+                      name: string;
+                      designation: string;
+                      ticket: string;
+                    };
+                  }) => (
+                    <li key={es.id}>
+                      {es.staff.name} ({es.staff.designation}
+                      {es.staff.ticket ? `/${es.staff.ticket}` : null})
+                    </li>
+                  )
+                )}
+              </ul>
+              {escort_staff.dollar_rate && (
+                <div>Dollar Rate : {escort_staff.dollar_rate}</div>
               )}
-            </ul>
+            </div>
           )}
         </div>
       </div>

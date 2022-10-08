@@ -1,5 +1,4 @@
 import Link from "next/link";
-// import {Link} from "react-scroll"
 import { Transition } from "@headlessui/react";
 import { useState } from "react";
 
@@ -16,6 +15,10 @@ const links: { name: string; url: string }[] = [
     name: "escort duty",
     url: "/escort_duty",
   },
+  {
+    name:"Dollar Rate",
+    url:"/dollar_rate"
+  }
 ];
 
 const AppBar = () => {
