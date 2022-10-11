@@ -12,7 +12,6 @@ export interface IStaff {
   designation: string;
 }
 
-
 export default function NewEscortDuty() {
   const [staffs, setStaffs] = useState<IStaff[] | undefined>();
   const [selectedStaff, setSelectedstaff] = useState<IStaff[] | undefined>();
@@ -23,6 +22,7 @@ export default function NewEscortDuty() {
     null
   );
   const [isError, setError] = useState(false);
+  const valid_date = [0, 2, 4, 5];
 
   useEffect(() => {
     fetchStaffs();
@@ -52,6 +52,13 @@ export default function NewEscortDuty() {
     } else if (destination === "") {
       setError(true);
       setAcknowledge("please select a valid destination");
+    } else if (!valid_date.includes(startDate.getDay())) {
+      setError(true);
+      setAcknowledge(
+        `${startDate.toLocaleDateString("en-US", {
+          weekday: "long",
+        })} is not valid`
+      );
     } else {
       fetch("/api/insert_escort_duty", {
         method: "POST",
