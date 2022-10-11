@@ -1,5 +1,6 @@
 import AccordionComp from "@/components/AccordionCopm";
 import Loader from "@/components/loader";
+import { detailedDate } from "@/utils/functions";
 import { supabase } from "@/utils/supabaseClient";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -64,12 +65,7 @@ const EscortDuty: NextPage = () => {
             <AccordionComp
               key={ep.id}
               prog_id={ep.id}
-              date={new Date(ep.escort_at).toLocaleDateString("en-US", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              date={detailedDate(ep.escort_at)}
               destination={ep.destination}
             />
           ))}

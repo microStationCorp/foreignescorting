@@ -1,10 +1,9 @@
 import Loader from "@/components/loader";
-import { classNames } from "@/utils/functions";
+import { classNames, detailedDate } from "@/utils/functions";
 import { StaffI } from "@/utils/interfaces";
 import { supabase } from "@/utils/supabaseClient";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-
 
 function Staff({ staff }: { staff: StaffI }) {
   const [staffDetail, setStaffdetail] = useState<any[] | undefined>();
@@ -26,6 +25,7 @@ function Staff({ staff }: { staff: StaffI }) {
       setStaffdetail(escort_data);
     }
   };
+
   return (
     <>
       <Head>
@@ -67,15 +67,17 @@ const ListItemComp = ({
 }) => {
   const [isChecked, setChecked] = useState(false);
   const [coEscort, setCoescort] = useState<
-    | any[]
     | {
-        staff: {
-          id: string;
-          name: string;
-          designation: string;
-          ticket: string;
-        };
-      }[]
+        staffs: {
+          staff: {
+            id: string;
+            name: string;
+            designation: string;
+            ticket: string;
+          };
+        }[];
+        dollar_rate: number;
+      }
     | undefined
   >();
 
@@ -87,16 +89,22 @@ const ListItemComp = ({
   }, [isChecked]);
 
   const fetchCoEscort = async () => {
-    const { data, error } = await supabase
-      .from("escort_staff")
-      .select("staff(id,name,designation,ticket)")
-      .eq("escort_program_id", staffData?.escort_prog.id)
-      .neq("staff_id", staffId);
+    fetch("/api/get_staff_prog_detail", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prog_id: staffData?.escort_prog.id,
+        staff_id: staffId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCoescort(data);
+      })
+      .catch((err) => console.log(err));
 
-    if (error) console.log(error);
-    else {
-      setCoescort(data);
-    }
   };
 
   return (
@@ -114,15 +122,7 @@ const ListItemComp = ({
               {" "}
               <span>{`On`}</span>{" "}
               <span className="italic font-semibold">
-                {new Date(staffData.escort_prog.escort_at).toLocaleDateString(
-                  "en-US",
-                  {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  }
-                )}
+                {detailedDate(staffData.escort_prog.escort_at)}
               </span>{" "}
               to{" "}
               <span className="italic font-semibold">
@@ -159,28 +159,41 @@ const ListItemComp = ({
               isChecked ? "max-h-min p-4 mx-4" : "max-h-0"
             )}`}
           >
-            {coEscort == undefined ? (
-              <div>
-                <Loader type="cubes" color="black" />
-              </div>
-            ) : (
-              <ul>
-                {coEscort?.map(
-                  (es: {
-                    staff: {
-                      id: string;
-                      name: string;
-                      designation: string;
-                      ticket: string;
-                    };
-                  }) => (
-                    <li key={es.staff.id}>
-                      {es.staff.name} ({es.staff.designation}
-                      {es.staff.ticket ? `/${es.staff.ticket}` : null})
-                    </li>
-                  )
+            {isChecked && (
+              <>
+                {coEscort === undefined ? (
+                  <div>
+                    <Loader type="cubes" color="black" />
+                  </div>
+                ) : (
+                  <div>
+                    <ul>
+                      {coEscort.staffs?.map(
+                        (es: {
+                          staff: {
+                            id: string;
+                            name: string;
+                            designation: string;
+                            ticket?: string;
+                          };
+                        }) => (
+                          <li key={es.staff.id}>
+                            {es.staff.name} ({es.staff.designation}
+                            {es.staff.ticket ? `/${es.staff.ticket}` : null})
+                          </li>
+                        )
+                      )}
+                    </ul>
+                    {coEscort.dollar_rate ? (
+                      <div>Dollar Rate : {coEscort.dollar_rate}</div>
+                    ) : (
+                      <div className="flex items-center">
+                        <span>Dollar Rate : <span className="text-red-400">Not Updated</span></span>
+                      </div>
+                    )}
+                  </div>
                 )}
-              </ul>
+              </>
             )}
           </div>
         </div>

@@ -2,7 +2,6 @@ import { classNames } from "@/utils/functions";
 import React, { useEffect, useState } from "react";
 import Loader from "./loader";
 
-
 function AccordionComp({
   prog_id,
   date,
@@ -81,33 +80,44 @@ function AccordionComp({
             isChecked ? "max-h-min p-4 mx-4" : "max-h-0"
           )}`}
         >
-          {escort_staff == undefined ? (
-            <div>
-              <Loader type="cubes" color="black" />
-            </div>
-          ) : (
-            <div>
-              <ul>
-                {escort_staff.staffs?.map(
-                  (es: {
-                    id: string;
-                    staff: {
-                      name: string;
-                      designation: string;
-                      ticket: string;
-                    };
-                  }) => (
-                    <li key={es.id}>
-                      {es.staff.name} ({es.staff.designation}
-                      {es.staff.ticket ? `/${es.staff.ticket}` : null})
-                    </li>
-                  )
-                )}
-              </ul>
-              {escort_staff.dollar_rate && (
-                <div>Dollar Rate : {escort_staff.dollar_rate}</div>
+          {isChecked && (
+            <>
+              {escort_staff == undefined ? (
+                <div>
+                  <Loader type="cubes" color="black" />
+                </div>
+              ) : (
+                <div>
+                  <ul>
+                    {escort_staff.staffs?.map(
+                      (es: {
+                        id: string;
+                        staff: {
+                          name: string;
+                          designation: string;
+                          ticket: string;
+                        };
+                      }) => (
+                        <li key={es.id}>
+                          {es.staff.name} ({es.staff.designation}
+                          {es.staff.ticket ? `/${es.staff.ticket}` : null})
+                        </li>
+                      )
+                    )}
+                  </ul>
+                  {escort_staff.dollar_rate ? (
+                    <div>Dollar Rate : {escort_staff.dollar_rate}</div>
+                  ) : (
+                    <div className="flex items-center">
+                      <span>
+                        Dollar Rate :{" "}
+                        <span className="text-red-400">Not Updated</span>
+                      </span>
+                    </div>
+                  )}
+                </div>
               )}
-            </div>
+            </>
           )}
         </div>
       </div>
