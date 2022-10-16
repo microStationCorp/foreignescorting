@@ -32,7 +32,7 @@ const AppBar = () => {
             <div className="flex items items-center mx-20 justify-between w-full">
               <div className="flex justify-center items-center flex-shrink-0">
                 <div className="font-bold text-xl cursor-pointer">
-                  Coach-<span className="text-blue-500">Diary</span>
+                  Foreign-<span className="text-blue-500">Escorting</span>
                 </div>
               </div>
               {/* for small screen */}

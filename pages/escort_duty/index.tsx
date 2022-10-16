@@ -5,7 +5,7 @@ import { supabase } from "@/utils/supabaseClient";
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const EscortDuty: NextPage = () => {
   const [escort_prog, setEscortProg] = useState<any[] | undefined>();
@@ -75,4 +75,4 @@ const EscortDuty: NextPage = () => {
   );
 };
 
-export default EscortDuty;
+export default React.memo(EscortDuty);

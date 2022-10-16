@@ -21,7 +21,7 @@ export default async function handler(
           .eq("escort_program_id", prog_id)
 
         if (error) {
-          res.status(500).json({ msg: error, place: "escort staff" });
+          res.status(500).json({ msg: error });
         } else if (escort_staff) {
           const { data: dollar_rate, error } = await supabase
             .from("dolar_rate")
