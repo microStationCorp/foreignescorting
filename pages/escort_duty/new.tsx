@@ -82,13 +82,17 @@ export default function NewEscortDuty() {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          setStaffs((prev) => prev && [...prev, ...selectedStaff]);
-          setSelectedstaff(undefined);
-          setStartDate(new Date());
-          setDestination("");
-          setError(false);
-          setAcknowledge("submitted");
+          if (!data.success) {
+            setError(true);
+            setAcknowledge(data.msg);
+          } else {
+            setStaffs((prev) => prev && [...prev, ...selectedStaff]);
+            setSelectedstaff(undefined);
+            setStartDate(new Date());
+            setDestination("");
+            setError(false);
+            setAcknowledge("submitted");
+          }
         })
         .catch((err) => {
           console.log(err);

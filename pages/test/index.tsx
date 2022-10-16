@@ -1,32 +1,24 @@
 import DatePickerComp from "@/components/DatePickerComp";
-import { checkValidCombination } from "@/utils/functions";
+import { supabase } from "@/utils/supabaseClient";
 import { useState } from "react";
-const data = {
-  KLNB: [0, 4],
-  DHCA: [2, 5],
-};
 
 export default function Test() {
   const [startDate, setDate] = useState(new Date());
-  const [dest, setDestination] = useState("");
-  const valid_date = [0, 2, 4, 5];
+  const dateSearch = async () => {
+    console.log(startDate);
+    const { data, error } = await supabase
+      .from("escort_prog")
+      .select("*")
+      .eq("escort_at", startDate.toLocaleDateString("af-ZA"));
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(data);
+    }
+  };
   return (
     <>
       <div>test page</div>
-      <div>
-        <div className="mb-3 xl:w-48 inline-block">
-          <select
-            defaultValue={""}
-            onChange={(e) => setDestination(e.currentTarget.value)}
-          >
-            <option value="" disabled>
-              Select Destination
-            </option>
-            <option value="KLNB">13129/13130 Khulna(KLNB)</option>
-            <option value="DHCA">13109/13110 Dhaca Cant(DHCA)</option>
-          </select>
-        </div>
-      </div>
 
       <DatePickerComp startdate={startDate} dateHandler={setDate} />
       <div>
@@ -34,20 +26,7 @@ export default function Test() {
         {startDate.toLocaleDateString("en-US", { weekday: "long" })}
       </div>
 
-      <div>
-        {valid_date.includes(startDate.getDay())
-          ? `${startDate.toLocaleDateString("en-US", {
-              weekday: "long",
-            })} is valid`
-          : `${startDate.toLocaleDateString("en-US", {
-              weekday: "long",
-            })} is invalid`}
-      </div>
-      <div>
-        {checkValidCombination({ dest, dateNum: startDate.getDay() })
-          ? "valid"
-          : "invalid"}
-      </div>
+      <button onClick={dateSearch}>search</button>
     </>
   );
 }

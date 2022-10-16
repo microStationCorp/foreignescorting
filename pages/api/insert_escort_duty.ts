@@ -23,31 +23,40 @@ export default async function handler(
   switch (req.method) {
     case "POST":
       {
-        const { data: escort_prog, error } = await supabase
+        const { data, error } = await supabase
           .from("escort_prog")
-          .insert([{ escort_at, destination }])
-          .select()
-          .single();
+          .select("*")
+          .eq("escort_at", new Date(escort_at).toLocaleDateString("af-ZA"));
 
-        if (error) {
-          res.status(500).json({ msg: error });
-        } else if (escort_prog) {
-          const { data: escorted_staff, error } = await supabase
-            .from("escort_staff")
-            .insert(
-              selectedStaff?.map(
-                (ss: { id: string; name: string; destination: string }) => ({
-                  escort_program_id: escort_prog.id,
-                  staff_id: ss.id,
-                })
-              )
-            )
-            .select();
+        if (data?.length !== 0) {
+          res.json({ success: false, msg: "this date is pre occupied" });
+        } else {
+          const { data: escort_prog, error } = await supabase
+            .from("escort_prog")
+            .insert([{ escort_at, destination }])
+            .select()
+            .single();
 
           if (error) {
             res.status(500).json({ msg: error });
-          } else if (escorted_staff) {
-            res.status(200).json({ success: true });
+          } else if (escort_prog) {
+            const { data: escorted_staff, error } = await supabase
+              .from("escort_staff")
+              .insert(
+                selectedStaff?.map(
+                  (ss: { id: string; name: string; destination: string }) => ({
+                    escort_program_id: escort_prog.id,
+                    staff_id: ss.id,
+                  })
+                )
+              )
+              .select();
+
+            if (error) {
+              res.status(500).json({ msg: error });
+            } else if (escorted_staff) {
+              res.status(200).json({ success: true });
+            }
           }
         }
       }
