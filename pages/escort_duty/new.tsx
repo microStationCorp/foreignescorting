@@ -1,7 +1,7 @@
 import DatePickerComponent from "@/components/DatePickerComp";
 import SearchBox from "@/components/SearchBox";
 import SelectedEscort from "@/components/SelectedEscort";
-import { classNames } from "@/utils/functions";
+import { checkValidCombination, classNames } from "@/utils/functions";
 import { supabase } from "@/utils/supabaseClient";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -16,7 +16,7 @@ export default function NewEscortDuty() {
   const [staffs, setStaffs] = useState<IStaff[] | undefined>();
   const [selectedStaff, setSelectedstaff] = useState<IStaff[] | undefined>();
   const [startDate, setStartDate] = useState<Date>(new Date());
-  const [destination, setDestination] = useState<string | undefined>("");
+  const [destination, setDestination] = useState<string>("");
   const [isLoading, setLoading] = useState(false);
   const [acknowledge, setAcknowledge] = useState<string | null | undefined>(
     null
@@ -58,6 +58,15 @@ export default function NewEscortDuty() {
         `${startDate.toLocaleDateString("en-US", {
           weekday: "long",
         })} is not valid`
+      );
+    } else if (
+      checkValidCombination({ dest: destination, dateNum: startDate.getDay() })
+    ) {
+      setError(true);
+      setAcknowledge(
+        `${startDate.toLocaleDateString("en-US", {
+          weekday: "long",
+        })} is not valid date for ${destination}`
       );
     } else {
       fetch("/api/insert_escort_duty", {
@@ -120,8 +129,8 @@ export default function NewEscortDuty() {
                   <option value="" disabled>
                     Select Destination
                   </option>
-                  <option value="KLNB">Khulna(KLNB)</option>
-                  <option value="DHCA">Dhaca Cant(DHCA)</option>
+                  <option value="KLNB">13129/13130 Khulna(KLNB)</option>
+                  <option value="DHCA">13109/13110 Dhaca Cant(DHCA)</option>
                 </select>
               </div>
             </div>

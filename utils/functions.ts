@@ -12,3 +12,25 @@ export const detailedDate = (date: string) =>
 export function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
+
+export function checkValidCombination({
+  dest,
+  dateNum,
+}: {
+  dest: string;
+  dateNum: number;
+}) {
+  const data = {
+    KLNB: [0, 4],
+    DHCA: [2, 5],
+  };
+
+  if (
+    (dest == "KLNB" && data.KLNB.includes(dateNum)) ||
+    (dest == "DHCA" && data.DHCA.includes(dateNum))
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+}

@@ -12,7 +12,7 @@ function DatePickerComponent({
       type="date"
       id="escort_date"
       name="escort_date"
-      value={startdate.toISOString().split("T")[0]}
+      value={startdate.toLocaleDateString("af-ZA")}
       onChange={(e) => {
         dateHandler(new Date(e.currentTarget.value));
       }}
